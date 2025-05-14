@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Habit Tracker</h1>
+
+<form action="/add" method="post" class="habit-form">
+    <input type="text" name="name" placeholder="Habit name" required>
+    <select name="frequency" required>
+        <option value="">Frequency</option>
+        <option value="Daily">Daily</option>
+        <option value="Weekly">Weekly</option>
+    </select>
+    <input type="date" name="start_date" required>
+    <button type="submit">Add Habit</button>
+</form>
+
+<div class="habit-list">
+    {% for habit in habits %}
+    <div class="habit-card">
+        <h3>{{ habit[1] }}</h3>
+        <p><strong>Frequency:</strong> {{ habit[2] }}</p>
+        <p><strong>Start Date:</strong> {{ habit[3] }}</p>
+        <p><strong>Last Done:</strong>
+            {% if habit[4] %}
+                {{ habit[4] }}
+            {% else %}
+                Not yet
+            {% endif %}
+        </p>
+        <form action="/complete/{{ habit[0] }}" method="post">
+            <button class="done-btn" type="submit">Mark as Done</button>
+        </form>
+        <form action="/delete/{{ habit[0] }}" method="post">
+            <button class="delete-btn" type="submit">Delete</button>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
